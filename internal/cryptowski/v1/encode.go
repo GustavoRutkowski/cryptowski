@@ -2,7 +2,7 @@ package v1
 
 import (
 	"math/big"
-	"github.com/GustavoRutkowsik/cryptowski/internal/utils"
+	"github.com/GustavoRutkowski/cryptowski/internal/utils"
 )
 
 func (v Crypto) Encode(data []byte, key string) []byte {

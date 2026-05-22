@@ -2,8 +2,7 @@ package v1
 
 import (
 	"math/big"
-
-	"github.com/GustavoRutkowsik/cryptowski/internal/utils"
+	"github.com/GustavoRutkowski/cryptowski/internal/utils"
 )
 
 func findPrime(len uint8) *big.Int {

@@ -5,8 +5,8 @@ import (
 	"flag"
 	"os"
 	"fmt"
-	"github.com/GustavoRutkowsik/cryptowski/internal/cryptowski"
-	"github.com/GustavoRutkowsik/cryptowski/internal/cryptowski/v1"
+	"github.com/GustavoRutkowski/cryptowski/internal/cryptowski"
+	"github.com/GustavoRutkowski/cryptowski/internal/cryptowski/v1"
 )
 
 // Version Flag: --v1 | --v2 | --v3 | --v4 | ...
