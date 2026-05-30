@@ -6,7 +6,7 @@ import (
 	"os"
 	"fmt"
 	"github.com/GustavoRutkowski/cryptowski/internal/cryptowski"
-	"github.com/GustavoRutkowski/cryptowski/internal/cryptowski/v1"
+	"github.com/GustavoRutkowski/cryptowski/internal/utils/cli"
 )
 
 // Version Flag: --v1 | --v2 | --v3 | --v4 | ...
@@ -16,22 +16,6 @@ import (
 // decode foobar.enc -o foobar.dec
 
 const INVALID_COMMAND_ERR = "Invalid Command! Run: cryptowski --help"
-
-func parseVersionFlags() cryptowski.ICrypto {
-	isV1 := flag.Bool("v1", false, "Use version 1")
-	// isV2 := flag.Bool("v2", false, "Use version 2")
-	// ...
-	flag.Parse()
-	
-	// Se passar muitas flags, pega sempre a versão mais recente informada
-	switch {
-	case *isV1:
-		return v1.Crypto{}
-	default:
-		latest := v1.Crypto{}
-		return latest
-	}
-}
 
 func resolveAction(crypto cryptowski.ICrypto, command string) (cryptowski.CryptoAlg, error) {
 	switch command {
@@ -91,7 +75,7 @@ Global Flags:
 		flag.PrintDefaults()
 	}
 
-	crypto := parseVersionFlags() // --v1 | --v2 | --v3 | --v4 | ...
+	crypto := cli.ParseVersionFlags() // --v1 | --v2 | --v3 | --v4 | ...
 	args := flag.Args()
 
 	if len(args) < 2 {
