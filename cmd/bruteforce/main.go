@@ -11,7 +11,41 @@ import (
 	"github.com/GustavoRutkowski/cryptowski/internal/utils/cli"
 )
 
-const INVALID_COMMAND_ERR = "Invalid Command! Run: bruteforce --help"
+const HELP = `
+Cryptowski Bruteforce - Recover encryption keys by exhaustive search.
+
+Usage:
+    bruteforce [--v1] <input-file> [flags]
+
+Flags:
+    --size N
+        Try only keys with length N
+
+    --minsize N
+        Minimum key length
+
+    --maxsize N
+        Maximum key length
+
+Global Flags:
+    --v1
+        Use algorithm version 1
+
+Examples:
+    bruteforce secret.enc --size 4
+
+        Try all keys with length 4
+
+    bruteforce secret.enc --maxsize 6
+
+        Try keys from length 1 to 6
+
+    bruteforce secret.enc --minsize 3 --maxsize 8
+
+        Try keys from length 3 to 8
+`
+
+const INVALID_COMMAND_ERR = "Invalid arguments. Run: bruteforce --help"
 
 func parseInterval(args []string) (utils.Interval[uint8], error) {
 	fs := flag.NewFlagSet("range", flag.ContinueOnError)
@@ -72,13 +106,7 @@ func handleBruteforce(file []byte, interval utils.Interval[uint8], decode crypto
 
 func main() {
 	flag.Usage = func() {
-		fmt.Println(`
-Usage:
-	bruteforce [--v1] <input-file> [flags]
-Global Flags:
-		`)
-
-		flag.PrintDefaults()
+		fmt.Print(HELP)
 	}
 
 	crypto := cli.ParseVersionFlags() // --v1 | --v2 | --v3 | --v4 | ...

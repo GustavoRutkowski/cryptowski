@@ -9,11 +9,31 @@ import (
 	"github.com/GustavoRutkowski/cryptowski/internal/utils/cli"
 )
 
-// Version Flag: --v1 | --v2 | --v3 | --v4 | ...
-// Default: Latest Version
+const HELP = `
+Cryptowski - File encryption utility
 
-// encode foobar.txt -o foobar.enc
-// decode foobar.enc -o foobar.dec
+Usage:
+    cryptowski [--v1] <command> <input-file> -o <output-file> -k <key>
+
+Commands:
+    encode    Encrypt a file
+    decode    Decrypt a file
+
+Flags:
+    -o string
+        Output filename
+
+    -k string
+        Encryption/decryption key
+
+Global Flags:
+    --v1
+        Use algorithm version 1
+
+Examples:
+    cryptowski encode notes.txt -o notes.enc -k secret
+    cryptowski decode notes.enc -o notes.txt -k secret
+`
 
 const INVALID_COMMAND_ERR = "Invalid Command! Run: cryptowski --help"
 
@@ -35,16 +55,6 @@ func parseCommandFlags(args []string) (string, string, error) {
 	output := fs.String("o", "", "Filename for output file. e.g.: encoded.enc")
 	key := fs.String("k", "", "Key for encoding/decoding")
 
-	fs.Usage = func() {
-		fmt.Println(`
-Usage:
-	cryptowski encode <input-file> -o <output-file> -k <key>
-
-Flags:
-		`)
-		fs.PrintDefaults()
-	}
-
 	if err := fs.Parse(args); err != nil {
 		return "", "", err
 	}
@@ -62,17 +72,7 @@ Flags:
 
 func main() {
 	flag.Usage = func() {
-		fmt.Println(`
-Usage:
-	cryptowski [--v1] <command> <input-file> [flags]
-Commands:
-	encode    Encode a file
-	decode    Decode a file
-
-Global Flags:
-		`)
-
-		flag.PrintDefaults()
+		fmt.Print(HELP)
 	}
 
 	crypto := cli.ParseVersionFlags() // --v1 | --v2 | --v3 | --v4 | ...
