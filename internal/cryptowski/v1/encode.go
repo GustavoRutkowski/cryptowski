@@ -1,12 +1,7 @@
 package v1
 
-import (
-	"math/big"
-	"github.com/GustavoRutkowski/cryptowski/internal/utils"
-)
-
 func (v Crypto) Encode(data []byte, key string) []byte {
-	generatedKey, keySum := v.Keygen(key)
+	keyBytes, keySum := v.keygen(key)
 	keyLen := uint16(len(key))
 	encoded := make([]byte, len(data))
 
@@ -15,14 +10,10 @@ func (v Crypto) Encode(data []byte, key string) []byte {
 	// j: 0 1 2 0 1 2 0 (Circular indexing)
 	for i := range data {
 		j := uint16(i) % keyLen
-		dataByte := utils.ByteToBigint(data[i])
-		dkeyByte := generatedKey[j]
 
 		// Formula: (T[i] + keySum + K[j]) % 256
-		sum := new(big.Int).Add(dataByte, keySum)
-		sum.Add(sum, dkeyByte)
-		mod := new(big.Int).Mod(sum, big.NewInt(256)).Uint64()
-		encoded[i] = byte(mod)
+		res := (uint16(data[i]) + keySum + uint16(keyBytes[j])) % 256
+		encoded[i] = byte(res)
 	}
 
 	return encoded
