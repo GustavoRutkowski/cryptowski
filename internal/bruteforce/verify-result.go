@@ -24,20 +24,25 @@ func validCharset(decoded []byte) rate {
 	return rate(valid) / rate(bytes)
 }
 
+var dict, dictErr = DownloadDictionary()
+
 func validWords(decoded []byte) (rate, error) {
 	var words uint = 0
 	var valid uint = 0
 
-	wordsList := strings.Fields(string(decoded))
-	dictionary, err := DownloadDictionary()
+	if dict == nil {
+		dict, dictErr = DownloadDictionary()
+	}
 
-	if err != nil {
-		return 0, err
+	wordsList := strings.Fields(string(decoded))
+
+	if dictErr != nil {
+		return 0, dictErr
 	}
 
 	for _, w := range wordsList {
 		words++
-		if dictionary.Has(w) {
+		if dict.Has(w) {
 			valid++
 		}
 	}
@@ -56,7 +61,7 @@ func verifyResult(decoded []byte) (bool, error) {
 		return false, err
 	}
 
-	if validWordsRate < DICTIONARY_RATE {
+	if validWordsRate <= DICTIONARY_RATE {
 		return false, nil
 	}
 
