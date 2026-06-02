@@ -230,4 +230,16 @@ Como o algoritmo de força bruta funciona de uma maneira relativamente complexa,
 
 ## 🔐 Os Algoritmos de Criptografia
 
-Documentação detalhada sobre os algoritmos de criptografia em breve...
+Todos os algoritmos de criptografia seguem a seguinte interface:
+
+```go
+type ICrypto interface {
+	Encode(data []byte, key string) []byte
+	Decode(data []byte, key string) []byte
+}
+```
+
+Porém, cada versão do algoritmo implementa uma lógica diferente em `Encode` e `Decode`.
+
+Para mais detalhes, leia:
+* [Documentação do algoritmo da V1](/docs/V1.md)
